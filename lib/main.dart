@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:quizzler_app/quiz_page.dart';
+import 'package:quizzler_app/pages/quiz_page.dart';
 
 void main() => runApp(const MyApp());
 
