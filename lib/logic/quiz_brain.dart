@@ -1,7 +1,7 @@
 import 'question.dart';
 
 class QuizBrain {
-  final int _score = 0;
+  int _score = 0;
   int _currentIndex = 0;
   final List<Question> _questions = [
     Question(
@@ -39,12 +39,16 @@ class QuizBrain {
     }
   }
 
-  int getCurrentIndex() {
-    return _currentIndex;
+  int userIsCorrect() {
+    return _score++;
   }
 
-  int getQuizQuestionsLength() {
-    return _questions.length - 1;
+  int getScore() {
+    return _score;
+  }
+
+  int getCurrentIndex() {
+    return _currentIndex;
   }
 }
 

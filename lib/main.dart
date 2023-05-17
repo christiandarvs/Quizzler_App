@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:quizzler_app/pages/quiz_page.dart';
+import 'package:quizzler_app/pages/quizzler.dart';
 
 void main() => runApp(const MyApp());
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: const QuizPage(),
+      home: const Quizzler(),
     );
   }
 }

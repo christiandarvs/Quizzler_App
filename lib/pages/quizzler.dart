@@ -1,52 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizzler_app/logic/quiz_brain.dart';
 import '../custom_widgets/custom_button.dart';
 
-class BuildPortrait extends StatefulWidget {
-  const BuildPortrait({super.key});
+class Quizzler extends StatefulWidget {
+  const Quizzler({super.key});
 
   @override
-  State<BuildPortrait> createState() => _BuildPortraitState();
+  State<Quizzler> createState() => QuizzlerState();
 }
 
-class _BuildPortraitState extends State<BuildPortrait> {
+class QuizzlerState extends State<Quizzler> {
   final trueIcon = const Icon(Icons.check, color: Color(0xff92BA92));
   final falseIcon = const Icon(
     Icons.close,
     color: Color(0xffE97777),
   );
-
   List<Icon> scoreKeeper = [];
   QuizBrain quizBrain = QuizBrain();
-  @override
-  Widget build(BuildContext context) {
+  void checkAnswer(bool userAnswer) {
     bool correctAnswer = quizBrain.getAnswer();
-
-    void trueButtonCheck() {
-      if (quizBrain.getCurrentIndex() >= 9) {
-      } else {
+    setState(() {
+      if (userAnswer == correctAnswer) {
         scoreKeeper.add(trueIcon);
-        if (correctAnswer) {
-          debugPrint('You got it right!');
-        } else {
-          debugPrint('You got it wrong!');
-        }
-      }
-    }
-
-    void falseButtonCheck() {
-      if (quizBrain.getCurrentIndex() >= 9) {
+        quizBrain.userIsCorrect();
+        debugPrint('${quizBrain.getScore()}');
       } else {
         scoreKeeper.add(falseIcon);
-        if (!correctAnswer) {
-          debugPrint('You got it right!');
-        } else {
-          debugPrint('You got it wrong!');
-        }
       }
-    }
+      if (quizBrain.getCurrentIndex() >= 9) {
+        displayScore();
+      }
+      quizBrain.nextQuestion();
+    });
+  }
 
+  void displayScore() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text('${quizBrain.getScore()} / 10')],
+          ),
+          content: Text('${quizBrain.getScore()}'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const Quizzler();
+                    },
+                  ));
+                },
+                child: const Text('Try Again')),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  SystemNavigator.pop();
+                },
+                child: const Text('Exit'))
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -60,11 +85,11 @@ class _BuildPortraitState extends State<BuildPortrait> {
         child: Column(
           children: [
             Expanded(
-              flex: 4,
+              flex: 5,
               child: Center(
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
-                  margin: const EdgeInsets.all(5),
+                  // margin: const EdgeInsets.all(5),
                   child: Text(
                     quizBrain.getQuestion(),
                     textAlign: TextAlign.center,
@@ -74,6 +99,7 @@ class _BuildPortraitState extends State<BuildPortrait> {
               ),
             ),
             Expanded(
+              flex: 0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -81,10 +107,7 @@ class _BuildPortraitState extends State<BuildPortrait> {
                     label: 'true',
                     color: const Color(0xff92BA92),
                     voidCallback: () {
-                      trueButtonCheck();
-                      setState(() {
-                        quizBrain.nextQuestion();
-                      });
+                      checkAnswer(true);
                     },
                   ),
                   const SizedBox(
@@ -94,18 +117,18 @@ class _BuildPortraitState extends State<BuildPortrait> {
                     label: 'false',
                     color: const Color(0xffE97777),
                     voidCallback: () {
-                      falseButtonCheck();
-                      setState(() {
-                        quizBrain.nextQuestion();
-                      });
+                      checkAnswer(false);
                     },
                   )
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: scoreKeeper,
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: scoreKeeper,
+              ),
             ),
           ],
         ),
