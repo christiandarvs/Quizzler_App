@@ -54,10 +54,10 @@ class QuizzlerState extends State<Quizzler> {
           content: RichText(
             text: TextSpan(children: [
               const TextSpan(
-                  text: '🎉 Congratulations! Your score is: ',
+                  text: 'Congratulations! Your score is: ',
                   style: TextStyle(color: Colors.black)),
               TextSpan(
-                  text: '${quizBrain.getScore()} 🎉',
+                  text: '${quizBrain.getScore()}',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black))
             ]),

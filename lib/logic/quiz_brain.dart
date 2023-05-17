@@ -19,7 +19,7 @@ class QuizBrain {
     Question(
         question: 'Depression is the leading cause of disability worldwide.',
         answer: true),
-    Question(question: 'C', answer: false),
+    Question(question: 'Cleopatra was of Egyptian descent.', answer: false),
     Question(
         question: 'Mount Fuji is the highest mountain in Japan.', answer: true)
   ];
