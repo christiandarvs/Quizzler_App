@@ -19,9 +19,7 @@ class QuizBrain {
     Question(
         question: 'Depression is the leading cause of disability worldwide.',
         answer: true),
-    Question(
-        question: 'Light bulbs were the invention of Thomas Edison.',
-        answer: false),
+    Question(question: 'C', answer: false),
     Question(
         question: 'Mount Fuji is the highest mountain in Japan.', answer: true)
   ];
@@ -49,6 +47,11 @@ class QuizBrain {
 
   int getCurrentIndex() {
     return _currentIndex;
+  }
+
+  void restartQuiz() {
+    _currentIndex = 0;
+    _score = 0;
   }
 }
 

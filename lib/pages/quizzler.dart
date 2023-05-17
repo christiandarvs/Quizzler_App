@@ -44,18 +44,33 @@ class QuizzlerState extends State<Quizzler> {
         return AlertDialog(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text('${quizBrain.getScore()} / 10')],
+            children: [
+              Text(
+                '${quizBrain.getScore()} / 10',
+                style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+              )
+            ],
           ),
-          content: Text('${quizBrain.getScore()}'),
+          content: RichText(
+            text: TextSpan(children: [
+              const TextSpan(
+                  text: '🎉 Congratulations! Your score is: ',
+                  style: TextStyle(color: Colors.black)),
+              TextSpan(
+                  text: '${quizBrain.getScore()} 🎉',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black))
+            ]),
+            textAlign: TextAlign.center,
+          ),
           actions: [
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) {
-                      return const Quizzler();
-                    },
-                  ));
+                  quizBrain.restartQuiz();
+                  setState(() {
+                    scoreKeeper.clear();
+                  });
                 },
                 child: const Text('Try Again')),
             TextButton(
